@@ -1,0 +1,25 @@
+services:
+  mysql-product-db:
+    image: mysql:8
+    container_name: mysql-product-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3308:3306"
+    networks:
+      - product-net
+
+  product-service:
+    build: .
+    container_name: product-service
+    depends_on:
+      - mysql-product-db
+    ports:
+      - "8086:8082"
+    networks:
+      - product-net
+
+networks:
+  product-net:
